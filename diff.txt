@@ -1,0 +1,131 @@
+6c6,7
+< double dx, dy, dt; // Step for each dimension and time.
+---
+> double dx, dy, dt;
+> // Step for each dimension and time.
+29c30
+< void wavePropagation(double *u_new, const double *u_current, const double *u_previous, const double *velocity, const double *wx, const double *wy, const double *zetax, const double *zetay, const int *idx)
+---
+> void wavePropagation(double *u_new, double const *u_current, double const *u_previous, double const *velocity, double const *wx, double const *wy, double const *zetax, double const *zetay, int const *idx)
+54c55
+< void sourceInjection(double *u_new, const double *value)
+---
+> void sourceInjection(double *u_new, double const *value)
+71c72
+< void update_omega(double *wx, double *wy, const double *ax, const double *ay, const double *bx, const double *by, const double *u_next, const int *idx)
+---
+> void update_omega(double *wx, double *wy, double const *ax, double const *ay, double const *bx, double const *by, double const *u_next, int const *idx)
+73d73
+< 
+76d75
+< 
+97c96
+< void update_zeta(double *zetax, double *zetay, const double *wx, const double *wy, const double *ax, const double *ay, const double *bx, const double *by, const double *u_next, const int *idx)
+---
+> void update_zeta(double *zetax, double *zetay, double const *wx, double const *wy, double const *ax, double const *ay, double const *bx, double const *by, double const *u_next, int const *idx)
+120c119
+< void initializeAxBx(double *ax, double *bx, const int *idx)
+---
+> void initializeAxBx(double *ax, double *bx, int const *idx)
+126c125,126
+<     Lx = CPML * dx; // This sould be outside the kernel.
+---
+>     Lx = CPML * dx;
+>     // This sould be outside the kernel.
+129,135c129
+<     {
+<         f_x = Lx - (idx[0] + CPML) * dx;
+<     }
+<     else if (idx[0] > nx - 2 * CPML)
+<     {
+<         f_x = dx * (idx[0] - nx + 2 * CPML);
+<     }
+---
+>       f_x = Lx - (idx[0] + CPML) * dx;
+137c131,133
+<     {
+---
+>       if (idx[0] > nx - 2 * CPML)
+>         f_x = dx * (idx[0] - nx + 2 * CPML);
+>       else
+139d134
+<     }
+157c152
+< void initializeAyBy(double *ay, double *by, const int *idx)
+---
+> void initializeAyBy(double *ay, double *by, int const *idx)
+163c158,159
+<     Ly = CPML * dy; // This sould be outside the kernel.
+---
+>     Ly = CPML * dy;
+>     // This sould be outside the kernel.
+169,172d164
+<     else if (idx[0] > ny - 2 * CPML)
+<     {
+<         f_y = dy * (idx[0] - ny + 2 * CPML);
+<     }
+174,176c166,173
+<     {
+<         f_y = 0.0;
+<     }
+---
+>       if (idx[0] > ny - 2 * CPML)
+>       {
+>           f_y = dy * (idx[0] - ny + 2 * CPML);
+>       }
+>       else
+>       {
+>           f_y = 0.0;
+>       }
+193c190
+< void makeCopy(double *to, const double *from)
+---
+> void makeCopy(double *to, double const *from)
+209d205
+< 
+229,230c225,228
+<     double **u, *source; // u represents the grid data, c the velocity for each location in space and source is a vector of the source magnitude in time.
+<     int i, j, t;         // Counters.
+---
+>     double **u, *source;
+>     // u represents the grid data, c the velocity for each location in space and source is a vector of the source magnitude in time.
+>     int i, j, t;
+>     // Counters.
+233,238c231,242
+<     int size[2];                                             // Size in each dimension.
+<     int base[] = {0, 0};                                     // Base indices for each dimension of the block.
+<     int d_m[] = {-BORDER_SIZE, -BORDER_SIZE};                // d_m - padding from the face in the negative direction for each dimension. (Halo)
+<     int d_p[] = {BORDER_SIZE, BORDER_SIZE};                  // d_p - padding from the face in the positive direction for each dimension. (Halo)
+<     ops_block wave_grid;                                     // Block struct variable.
+<     ops_dat d_u_Previous, d_u_Current, d_u_Next, d_velocity; // Block data.
+---
+>     int size[2];
+>     // Size in each dimension.
+>     int base[] = {0, 0};
+>     // Base indices for each dimension of the block.
+>     int d_m[] = {-BORDER_SIZE, -BORDER_SIZE};
+>     // d_m - padding from the face in the negative direction for each dimension. (Halo)
+>     int d_p[] = {BORDER_SIZE, BORDER_SIZE};
+>     // d_p - padding from the face in the positive direction for each dimension. (Halo)
+>     ops_block wave_grid;
+>     // Block struct variable.
+>     ops_dat d_u_Previous, d_u_Current, d_u_Next, d_velocity;
+>     // Block data.
+252,253c256,259
+<     int stride2d_x[] = {1, 0}; // Stride only in X dimension.
+<     int stride2d_y[] = {0, 1}; // Stride only in Y dimension.
+---
+>     int stride2d_x[] = {1, 0};
+>     // Stride only in X dimension.
+>     int stride2d_y[] = {0, 1};
+>     // Stride only in Y dimension.
+465c471,472
+<     } while (t < tIntervals);
+---
+>     }
+>     while (t < tIntervals);
+475c482
+< }
+\ Nenhum caractere de nova linha no final do arquivo
+---
+> }
